@@ -58,7 +58,7 @@ export default function App() {
           <Grid container spacing={5} className={classes.mainGrid}>
             <Grid item xs >
               <Typography variant="h4">Hey there, I'm Andy Darr</Typography>
-              <Typography variant="body1">I build apps, travel, game, play music, and drink lots of coffee.</Typography>
+              <Typography variant="body1">I build apps, travel, game, play music, think, and drink lots of coffee.</Typography>
               <Box component="div" mt={2}>
                 <Typography variant="body1">Drop me a line ✌️</Typography>
                   <div>

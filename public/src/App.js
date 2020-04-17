@@ -52,11 +52,11 @@ export default function App() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="md">
+      <Container maxWidth="sm">
         <Header sections={links} />
         <main>
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs >
               <Typography variant="h4">Hey there, I'm Andy Darr</Typography>
               <Typography variant="body1">I build apps, travel, game, play music, and drink lots of coffee.</Typography>
               <Box component="div" mt={2}>
@@ -66,7 +66,7 @@ export default function App() {
                   </div>
               </Box>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs >
               <Box display="flex" justifyContent="center">
                 <Avatar src={me} className={classes.avatar} />
               </Box>

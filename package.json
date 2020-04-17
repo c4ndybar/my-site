@@ -1,0 +1,24 @@
+{
+  "name": "mysite",
+  "version": "1.0.0",
+  "description": "my site",
+  "main": "index.js",
+  "scripts": {
+    "predeploy-hosting": "cd public && npm run build",
+    "deploy-hosting": "firebase deploy --only hosting",
+    "deploy-functinos": "firebase deploy --only functions"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c4ndybar/mysite.git"
+  },
+  "author": "andy darr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/c4ndybar/mysite/issues"
+  },
+  "homepage": "https://github.com/c4ndybar/mysite#readme",
+  "dependencies": {
+    "firebase-tools": "^8.1.0"
+  }
+}

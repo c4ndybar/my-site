@@ -60,9 +60,9 @@ export default function App() {
               <Typography variant="h4">Hey there, I'm Andy Darr</Typography>
               <Typography variant="body1">I build apps, travel, game, play music, think, and drink lots of coffee.</Typography>
               <Box component="div" mt={2}>
-                <Typography variant="body1">Drop me a line ✌️</Typography>
+                {/* <Typography variant="body1"></Typography> */}
                   <div>
-                    <Link variant="body2" href="mailto:andrew.darr86@gmail.com">andrew.darr86@gmail.com</Link>
+                    <Link variant="body2" href="https://www.linkedin.com/in/andrew-darr/">Drop me a line ✌️</Link>
                   </div>
               </Box>
             </Grid>

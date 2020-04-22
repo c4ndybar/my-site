@@ -1,8 +1,9 @@
 import React from 'react';
-import { makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import './App.scss';
 import Header from './Header';
-import {GitHub as GitHub, LinkedIn, Instagram, SportsEsports} from '@material-ui/icons'
+import { GitHub, LinkedIn, Instagram, SportsEsports } from '@material-ui/icons'
 import { Container, Typography, Avatar, Link, Box, Grid } from '@material-ui/core';
 import me from './images/me.jpeg'
 
@@ -52,21 +53,24 @@ export default function App() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <Header sections={links} />
         <main>
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Grid item xs >
-              <Typography variant="h4">Hey there, I'm Andy Darr</Typography>
-              <Typography variant="body1">I build apps, travel, game, play music, think, and drink lots of coffee.</Typography>
+            <Grid item xs sm >
+              <Typography variant="h4" component="h1">
+                <span className="subtle">hey there, i'm </span><span className="emphasized">Andy Darr</span><span className="subtle">, a </span><span className="emphasized">software engineer</span><span className="subtle"> in Columbus</span></Typography>
+              <Box component="div" mt={1}>
+                <Typography variant="subtitle1">I build apps, travel, game, play music, think, and drink lots of coffee.</Typography>
+              </Box>
               <Box component="div" mt={2}>
                 {/* <Typography variant="body1"></Typography> */}
-                  <div>
-                    <Link variant="body2" href="https://www.linkedin.com/in/andrew-darr/">Drop me a line ✌️</Link>
-                  </div>
+                <div>
+                  <Link variant="body2" href="https://www.linkedin.com/in/andrew-darr/">Drop me a line ✌️</Link>
+                </div>
               </Box>
             </Grid>
-            <Grid item xs >
+            <Grid item xs={12} sm >
               <Box display="flex" justifyContent="center">
                 <Avatar src={me} className={classes.avatar} />
               </Box>

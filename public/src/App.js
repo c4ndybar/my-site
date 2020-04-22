@@ -59,15 +59,16 @@ export default function App() {
           <Grid container spacing={5} className={classes.mainGrid}>
             <Grid item xs sm >
               <Typography variant="h4" component="h1">
-                <span className="subtle">hey there, i'm </span><span className="emphasized">Andy Darr</span><span className="subtle">, a </span><span className="emphasized">software engineer</span><span className="subtle"> in Columbus</span></Typography>
-              <Box component="div" mt={1}>
-                <Typography variant="subtitle1">I build apps, travel, game, play music, think, and drink lots of coffee.</Typography>
+                <span className="subtle">Hey there, I'm </span>
+                <span className="emphasized">Andy Darr</span>
+                <span className="subtle">, a </span>
+                <span className="emphasized">software engineer</span>
+                <span className="subtle"> in Columbus</span></Typography>
+              <Box component="div" mt={2}>
+                <Typography component="p" variant="body1" className="intro">I build apps, travel, game, play music, think about stuff, and drink lots of coffee.</Typography>
               </Box>
               <Box component="div" mt={2}>
-                {/* <Typography variant="body1"></Typography> */}
-                <div>
-                  <Link variant="body2" href="https://www.linkedin.com/in/andrew-darr/">Drop me a line ✌️</Link>
-                </div>
+                <Link variant="body2" href="https://www.linkedin.com/in/andrew-darr/">Drop me a line <span role="img" aria-label="peace sign">✌</span>️</Link>
               </Box>
             </Grid>
             <Grid item xs={12} sm >

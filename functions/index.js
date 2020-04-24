@@ -7,8 +7,7 @@ exports.spotifyPoller = functions.https.onRequest(async (request, response) => {
         console.log('result is ', result)
         response.json(result);
     } catch (err) {
-        console.error('error')
         console.error(err)
-        response.status('500').send(err)
+        response.status('500').json(err)
     }
 });

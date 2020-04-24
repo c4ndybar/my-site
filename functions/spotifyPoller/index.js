@@ -61,13 +61,18 @@ async function getRecentTracks(spotifyApi) {
 async function updateMusicHistoryDb(tracks) {
     let batch = db.batch();
 
-    tracks.forEach(track => {
-        const id = track.id;
-        delete track.id;
-        track.datePlayed = admin.firestore.Timestamp.fromDate(track.datePlayed);
+    const docs = await musicHistoryRef.listDocuments()
+    console.debug('got docs', docs.length);
+    docs.forEach((doc) => batch.delete(doc));
 
-        batch.set(musicHistoryRef.doc(id), track);
-    });
+    tracks.sort((l, r) => l.datePlayed < r.datePlayed)
+        .forEach(track => {
+            const id = track.id;
+            delete track.id;
+            track.datePlayed = admin.firestore.Timestamp.fromDate(track.datePlayed);
+
+            batch.set(musicHistoryRef.doc(id), track);
+        });
 
     return batch.commit();
 }

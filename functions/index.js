@@ -1,4 +1,14 @@
 const functions = require('firebase-functions');
-const app = require('./app')
+const {fn} = require('./spotifyPoller')
 
-exports.app = functions.https.onRequest(app)
+exports.spotifyPoller = functions.https.onRequest(async (request, response) => {
+    try {
+        const result = await fn()
+        console.log('result is ', result)
+        response.json(result);
+    } catch (err) {
+        console.error('error')
+        console.error(err)
+        response.status('500').send(err)
+    }
+});

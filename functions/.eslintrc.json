@@ -6,10 +6,8 @@
   "plugins": [
     "promise"
   ],
-  "extends": ["eslint:recommended", "google"],
+  "extends": "eslint:recommended",
   "rules": {
-    "require-jsdoc": "off",
-    "semi": "off",
     // Removed rule "disallow the use of console" from recommended eslint rules
     "no-console": "off",
 

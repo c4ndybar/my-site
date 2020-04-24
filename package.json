@@ -6,7 +6,8 @@
   "scripts": {
     "predeploy-hosting": "cd public && npm run build",
     "deploy-hosting": "firebase deploy --only hosting",
-    "deploy-functinos": "firebase deploy --only functions"
+    "deploy-functions": "firebase deploy --only functions",
+    "emulators": "firebase emulators:start --only functions"
   },
   "repository": {
     "type": "git",

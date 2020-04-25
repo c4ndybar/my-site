@@ -67,9 +67,6 @@ export default function App() {
               <Box component="div" mt={2}>
                 <Typography component="p" variant="body1" className="intro">I build apps, travel, game, play music, think about stuff, and drink lots of coffee.</Typography>
               </Box>
-              <Box component="div" mt={2}>
-                <Link variant="body2" href="https://www.linkedin.com/in/andrew-darr/">Drop me a line <span role="img" aria-label="peace sign">✌</span>️</Link>
-              </Box>
             </Grid>
             <Grid item xs={12} sm >
               <Box display="flex" justifyContent="center">

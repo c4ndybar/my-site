@@ -62,7 +62,6 @@ async function updateMusicHistoryDb(tracks) {
     let batch = db.batch();
 
     const docs = await musicHistoryRef.listDocuments()
-    console.debug('got docs', docs.length);
     docs.forEach((doc) => batch.delete(doc));
 
     tracks.sort((l, r) => l.datePlayed < r.datePlayed)

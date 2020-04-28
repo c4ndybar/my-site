@@ -6,6 +6,7 @@ import Header from './Header';
 import { GitHub, LinkedIn, Instagram, SportsEsports } from '@material-ui/icons'
 import { Container, Typography, Avatar, Link, Box, Grid } from '@material-ui/core';
 import me from './images/me.jpeg'
+import History from './History'
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -72,6 +73,9 @@ export default function App() {
               <Box display="flex" justifyContent="center">
                 <Avatar src={me} className={classes.avatar} />
               </Box>
+            </Grid>
+            <Grid item sm={12}>
+              <History/>
             </Grid>
           </Grid>
         </main>

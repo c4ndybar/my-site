@@ -11,3 +11,5 @@ exports.spotifyPoller = functions.https.onRequest(async (request, response) => {
         response.status('500').json(err)
     }
 });
+
+exports.spotifyPollerScheduled = functions.pubsub.schedule('0 9-23 * * *').onRun(fn);

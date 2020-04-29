@@ -44,7 +44,7 @@ async function refreshAccessToken(spotifyApi) {
 }
 
 async function getRecentTracks(spotifyApi) {
-    const data = await spotifyApi.getMyRecentlyPlayedTracks()
+    const data = await spotifyApi.getMyRecentlyPlayedTracks({limit: 10})
     console.log("Got back recent track data", data);
     return data.body.items.map((item) => {
         return {

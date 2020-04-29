@@ -34,35 +34,84 @@ export default function History() {
     const classes = useStyles();
 
     useEffect(() => {
-        db.collection("musicHistory").get().then((querySnapshot) => {
-            let history = [];
-            querySnapshot.forEach((doc) => {
-                console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
-                history.push({ ...doc.data(), id: doc.id });
+        const recentlyPlayedMusic = db.collection("musicHistory").orderBy('datePlayed', 'desc').limit(5).get().then((snapshot) => {
+            let recentPlays = [];
+
+            snapshot.forEach((doc) => {
+                const data = doc.data()
+                recentPlays.push({
+                    id: doc.id,
+                    url: data.trackUrl,
+                    description: `${data.trackName} - ${data.artistName}`,
+                    date: data.datePlayed.toDate()
+                });
             });
 
-            setHistory(history.sort((a, b) => b.datePlayed.seconds - a.datePlayed.seconds));
+            return recentPlays
+        })
+
+        const travelHistory = db.collection("travelHistory").orderBy('date', 'desc').limit(5).get().then((snapshot) => {
+            let travelHistory = [];
+
+            snapshot.forEach((doc) => {
+                const data = doc.data()
+                travelHistory.push({
+                    id: doc.id,
+                    description: data.name,
+                    date: data.date.toDate()
+                });
+            });
+
+            return travelHistory
+        })
+
+        const lifeHistory = db.collection("lifeHistory").orderBy('date', 'desc').limit(5).get().then((snapshot) => {
+            let history = [];
+
+            snapshot.forEach((doc) => {
+                const data = doc.data()
+                history.push({
+                    id: doc.id,
+                    description: data.name,
+                    date: data.date.toDate()
+                });
+            });
+
+            return history
+        })
+
+        Promise.all([recentlyPlayedMusic, travelHistory, lifeHistory]).then((values) => {
+            let history = values.flat().sort((a, b) => b.date - a.date)
+            setHistory(history)
         }).catch((err) => {
-            console.error(err);
-            setErrors(true);
-        });
-    }, []);
+            console.error('error occurred', err)
+            setErrors(true)
+        })
 
-    if (hasError)
-        return (<h3>ERROR</h3>)
-    else {
-        return (<div>
-            <Typography variant="h6">Recent Plays</Typography>
-            <ul>
-                {history.map((item) => {
-                    return (
-                        <li key={item.id}>
-                            <span className={classes.historyTime}>{moment(item.datePlayed.toDate()).fromNow()}</span> | <Link href={item.trackUrl} target="_blank">{item.trackName} - {item.artistName}</Link>
-                        </li>
-                    )
+}, []);
 
-                })}
-            </ul>
-        </div>)
+function getHistoryLine(item) {
+    if (item.url) {
+        return <Link href={item.url} target="_blank">{item.description}</Link>
+    } else {
+        return item.description
     }
+}
+if (hasError)
+    return (<h3>ERROR</h3>)
+else {
+    return (<div>
+        <Typography variant="h6">Recent Plays</Typography>
+        <ul>
+            {history.map((item) => {
+                return (
+                    <li key={item.id}>
+                         <span className={classes.historyTime}>{moment(item.date).fromNow()}</span> | {getHistoryLine(item)}
+                    </li>
+                )
+
+            })}
+        </ul>
+    </div>)
+}
 }

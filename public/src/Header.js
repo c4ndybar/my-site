@@ -38,6 +38,7 @@ export default function Header(props) {
               key={section.title}
               variant="body2"
               href={section.url}
+              target="_blank"
               className={classes.toolbarLink}
             >
               <LinkIcon />

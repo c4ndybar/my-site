@@ -5,27 +5,23 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     historyTime: {
-        display: 'inline-block',
-        width: '60px',
+        borderRight: "solid 1px rgba(0,0,0,0.5)",
         textAlign: 'right',
+        paddingRight: '0.25rem'
     },
+    historyDescription: {
+        paddingLeft: '0.25rem'
+    }
 }));
 
 function getItemDescription(item) {
-    let prefix = '';
-
     switch (item.type) {
         case 'music':
-            prefix = 'listened to ';
-            break;
+            return (<span>Listend to <Link href={item.url} target="_blank">{item.description}</Link></span>);
         case 'commit':
-            prefix = 'commited ';
-    }
-
-    if (item.url) {
-        return (<span>{prefix} <Link href={item.url} target="_blank">{item.description}</Link></span>)
-    } else {
-        return prefix + item.description;
+            return (<span>Commited "<Link href={item.url} target="_blank">{item.description}</Link>"</span>);
+        default:
+            return item.description;
     }
 }
 
@@ -33,8 +29,8 @@ export default function HistoryItem({ item }) {
     const classes = useStyles();
 
     return (
-        <span>
-            <span className={classes.historyTime}> {moment(item.date).fromNow()} </span> : { getItemDescription(item)}
-        </span>
+        <tr>
+            <td className={classes.historyTime}>{moment(item.date).fromNow()}</td><td className={classes.historyDescription}>{ getItemDescription(item)}</td>
+        </tr>
     )
 }

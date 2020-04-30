@@ -13,10 +13,10 @@ moment.updateLocale('en', {
         hh: "%dh",
         d: "%dd",
         dd: "%dd",
-        M: "%dM",
-        MM: "%dM",
-        y: "%dy",
-        yy: "%dy"
+        M: "%dmth",
+        MM: "%dmth",
+        y: "%dyr",
+        yy: "%dyr"
     }
 });
 
@@ -25,7 +25,7 @@ export default function History() {
     const [history, setHistory] = useState([])
 
     useEffect(() => {
-        const recentlyPlayedMusic = db.collection("musicHistory").orderBy('datePlayed', 'desc').limit(5).get().then((snapshot) => {
+        const recentlyPlayedMusic = db.collection("musicHistory").orderBy('datePlayed', 'desc').limit(3).get().then((snapshot) => {
             let recentPlays = [];
 
             snapshot.forEach((doc) => {
@@ -42,7 +42,7 @@ export default function History() {
             return recentPlays
         })
 
-        const travelHistory = db.collection("travelHistory").orderBy('date', 'desc').limit(5).get().then((snapshot) => {
+        const travelHistory = db.collection("travelHistory").orderBy('date', 'desc').limit(3).get().then((snapshot) => {
             let travelHistory = [];
 
             snapshot.forEach((doc) => {
@@ -57,7 +57,7 @@ export default function History() {
             return travelHistory
         })
 
-        const lifeHistory = db.collection("lifeHistory").orderBy('date', 'desc').limit(5).get().then((snapshot) => {
+        const lifeHistory = db.collection("lifeHistory").orderBy('date', 'desc').limit(3).get().then((snapshot) => {
             let history = [];
 
             snapshot.forEach((doc) => {
@@ -72,7 +72,7 @@ export default function History() {
             return history
         })
 
-        const githubHistory = db.collection("githubHistory").orderBy('date', 'desc').limit(5).get().then((snapshot) => {
+        const githubHistory = db.collection("githubHistory").orderBy('date', 'desc').limit(3).get().then((snapshot) => {
             let history = [];
 
             snapshot.forEach((doc) => {
@@ -104,15 +104,15 @@ export default function History() {
     else {
         return (<div>
             <Typography variant="h6">Log</Typography>
-            <ul>
-                {history.map((item) => {
-                    return (
-                        <li key={item.id}>
-                            <HistoryItem item={item} />
-                        </li>
-                    )
-                })}
-            </ul>
+            <table>
+                <tbody>
+                    {history.map((item) => {
+                        return (
+                            <HistoryItem key={item.id} item={item} />
+                        )
+                    })}
+                </tbody>
+            </table>
         </div>)
     }
 }

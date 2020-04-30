@@ -72,7 +72,24 @@ export default function History() {
             return history
         })
 
-        Promise.all([recentlyPlayedMusic, travelHistory, lifeHistory]).then((values) => {
+        const githubHistory = db.collection("githubHistory").orderBy('date', 'desc').limit(5).get().then((snapshot) => {
+            let history = [];
+
+            snapshot.forEach((doc) => {
+                const data = doc.data()
+                history.push({
+                    type: 'commit',
+                    id: doc.id,
+                    description: data.message,
+                    url: data.url,
+                    date: data.date.toDate()
+                });
+            });
+
+            return history
+        })
+
+        Promise.all([recentlyPlayedMusic, travelHistory, lifeHistory, githubHistory]).then((values) => {
             let history = values.flat().sort((a, b) => b.date - a.date)
             setHistory(history)
         }).catch((err) => {
@@ -81,7 +98,6 @@ export default function History() {
         })
 
     }, []);
-
 
     if (hasError)
         return (<span></span>)

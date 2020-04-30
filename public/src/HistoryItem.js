@@ -12,7 +12,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getItemDescription(item) {
-    const prefix = (item.type === 'music') ? 'listened to ' : '';
+    let prefix = '';
+
+    switch (item.type) {
+        case 'music':
+            prefix = 'listened to ';
+            break;
+        case 'commit':
+            prefix = 'commited ';
+    }
 
     if (item.url) {
         return (<span>{prefix} <Link href={item.url} target="_blank">{item.description}</Link></span>)

@@ -1,7 +1,6 @@
 const admin = require('firebase-admin');
 const config = require('config');
 
-
 if (config.googleServiceAccountKey) {
     console.log('trying google account creds')
     admin.initializeApp({
@@ -15,23 +14,46 @@ if (config.googleServiceAccountKey) {
 const db = admin.firestore();
 const spotifyRef = db.collection('keys').doc('spotify');
 
-async function updateGithubHistory(commits) {
-    const githubHistoryRef = db.collection('githubHistory');
+function convertObjDatesToTimestamps(obj) {
+    Object.keys(obj).forEach((key) => {
+        if (obj[key] instanceof Date) {
+            obj[key] = admin.firestore.Timestamp.fromDate(obj[key]);
+        }
+    })
+}
 
+async function truncateRefAndInsertItems(ref, items) {
     let batch = db.batch();
 
-    const docs = await githubHistoryRef.listDocuments()
-    docs.forEach((doc) => batch.delete(doc));
+    const existingDocs = await ref.listDocuments()
+    existingDocs.forEach((doc) => batch.delete(doc));
 
-    commits.forEach(commit => {
-        commit.date = admin.firestore.Timestamp.fromDate(commit.date);
+    items.forEach(item => {
+        convertObjDatesToTimestamps(item);
 
-        batch.set(githubHistoryRef.doc(commit.id), commit);
+        batch.set(ref.doc(item.id), item);
     });
 
     return batch.commit();
 }
 
+async function updateInstagramHistory(posts) {
+    const instaHistoryRef = db.collection('instagramHistory');
+
+    return truncateRefAndInsertItems(instaHistoryRef, posts);
+}
+
+async function updateGithubHistory(commits) {
+    const githubHistoryRef = db.collection('githubHistory');
+
+    truncateRefAndInsertItems(githubHistoryRef, commits);
+}
+
+async function updateMusicHistory(tracks) {
+    const musicHistoryRef = db.collection('musicHistory');
+
+    truncateRefAndInsertItems(musicHistoryRef, tracks);
+}
 async function getSpotifyAccessTokens() {
     return spotifyRef.get()
         .then((doc) => {
@@ -43,25 +65,6 @@ async function getSpotifyAccessTokens() {
         .catch((err) => {
             console.log('Error getting documents', err);
         });
-}
-
-async function updateMusicHistory(tracks) {
-    const musicHistoryRef = db.collection('musicHistory');
-    let batch = db.batch();
-
-    const docs = await musicHistoryRef.listDocuments()
-    docs.forEach((doc) => batch.delete(doc));
-
-    tracks.sort((l, r) => l.datePlayed < r.datePlayed)
-        .forEach(track => {
-            const id = track.id;
-            delete track.id;
-            track.datePlayed = admin.firestore.Timestamp.fromDate(track.datePlayed);
-
-            batch.set(musicHistoryRef.doc(id), track);
-        });
-
-    return batch.commit();
 }
 
 function updateSpotifyAccessToken(token, expireTime) {
@@ -76,5 +79,6 @@ module.exports = {
     updateGithubHistory,
     updateMusicHistory,
     getSpotifyAccessTokens,
-    updateSpotifyAccessToken
+    updateSpotifyAccessToken,
+    updateInstagramHistory,
 }

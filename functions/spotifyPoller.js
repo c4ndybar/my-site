@@ -19,7 +19,8 @@ async function getRecentTracks(spotifyApi) {
             id: item.track.id,
             artistName: item.track.artists[0].name,
             trackName: item.track.name,
-            trackUrl: item.track.external_urls.spotify,
+            trackUrl: item.track.external_urls.spotify, // deprecating trackUrl
+            url: item.track.external_urls.spotify,
             datePlayed: new Date(item.played_at)
         }
     })

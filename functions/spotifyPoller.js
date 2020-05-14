@@ -21,7 +21,7 @@ async function getRecentTracks(spotifyApi) {
             trackName: item.track.name,
             trackUrl: item.track.external_urls.spotify, // deprecating
             url: item.track.external_urls.spotify,
-            datePlayed: new Date(item.played_at) // deprecating
+            datePlayed: new Date(item.played_at), // deprecating
             date: new Date(item.played_at)
         }
     })

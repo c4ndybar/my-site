@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import HistoryItem from './HistoryItem'
-import { db } from './database'
+import { db } from '../database'
 import { Typography } from '@material-ui/core'
 import moment from 'moment';
 

@@ -25,71 +25,29 @@ export default function History() {
     const [history, setHistory] = useState([])
 
     useEffect(() => {
-        const recentlyPlayedMusic = db.collection("musicHistory").orderBy('datePlayed', 'desc').limit(3).get().then((snapshot) => {
-            let recentPlays = [];
+        function getDbHistoryItems(collectionName, itemType) {
+            return db.collection(collectionName).orderBy('date', 'desc').limit(3).get().then((snapshot) => {
+                let items = [];
 
-            snapshot.forEach((doc) => {
-                const data = doc.data()
-                recentPlays.push({
-                    id: doc.id,
-                    type: 'music',
-                    url: data.trackUrl,
-                    description: `${data.trackName} - ${data.artistName}`,
-                    date: data.datePlayed.toDate()
+                snapshot.forEach((doc) => {
+                    const data = doc.data()
+                    items.push(Object.assign(data, {
+                        type: itemType,
+                        date: data.date.toDate()
+                    }));
                 });
+
+                return items;
             });
+        }
 
-            return recentPlays
-        })
+        const instaPosts = getDbHistoryItems("instagramHistory", "instaPost");
+        const recentlyPlayedMusic = getDbHistoryItems("musicHistory", "music");
+        const travelHistory = getDbHistoryItems("travelHistory", "travel");
+        const lifeHistory = getDbHistoryItems("lifeHistory", "life");
+        const githubHistory = getDbHistoryItems("githubHistory", "commit");
 
-        const travelHistory = db.collection("travelHistory").orderBy('date', 'desc').limit(3).get().then((snapshot) => {
-            let travelHistory = [];
-
-            snapshot.forEach((doc) => {
-                const data = doc.data()
-                travelHistory.push({
-                    id: doc.id,
-                    description: data.name,
-                    date: data.date.toDate()
-                });
-            });
-
-            return travelHistory
-        })
-
-        const lifeHistory = db.collection("lifeHistory").orderBy('date', 'desc').limit(3).get().then((snapshot) => {
-            let history = [];
-
-            snapshot.forEach((doc) => {
-                const data = doc.data()
-                history.push({
-                    id: doc.id,
-                    description: data.name,
-                    date: data.date.toDate()
-                });
-            });
-
-            return history
-        })
-
-        const githubHistory = db.collection("githubHistory").orderBy('date', 'desc').limit(3).get().then((snapshot) => {
-            let history = [];
-
-            snapshot.forEach((doc) => {
-                const data = doc.data()
-                history.push({
-                    type: 'commit',
-                    id: doc.id,
-                    description: data.message,
-                    url: data.url,
-                    date: data.date.toDate()
-                });
-            });
-
-            return history
-        })
-
-        Promise.all([recentlyPlayedMusic, travelHistory, lifeHistory, githubHistory]).then((values) => {
+        Promise.all([recentlyPlayedMusic, travelHistory, lifeHistory, githubHistory, instaPosts]).then((values) => {
             let history = values.flat().sort((a, b) => b.date - a.date)
             setHistory(history)
         }).catch((err) => {

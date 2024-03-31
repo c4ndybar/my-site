@@ -1,6 +1,5 @@
 const db = require('./database');
 const axios = require('axios');
-const { credentials } = require('config');
 
 function flattenArray(array) {
     return [].concat.apply([], array);
@@ -9,8 +8,7 @@ function flattenArray(array) {
 async function getRecentCommits() {
     const response = await axios({
         method: 'get',
-        url: 'https://api.github.com/users/c4ndybar/events',
-        auth: credentials.github
+        url: 'https://api.github.com/users/c4ndybar/events?per_page=10',
     });
 
     const arrayOfCommitArrays = response.data
@@ -29,6 +27,7 @@ async function getRecentCommits() {
 
 exports.pollGithub = async () => {
     const commits = await getRecentCommits();
+
     await db.updateGithubHistory(commits);
 
     return commits;

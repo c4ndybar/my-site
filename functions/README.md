@@ -12,7 +12,6 @@ module.exports = {
     },
     credentials: {
         instagramAccessToken: '<token val>',
-        github: '<github creds>',
     }
 }
 ```

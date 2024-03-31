@@ -1,6 +1,6 @@
 const db = require('./database');
 const axios = require('axios');
-const credentials = require('./credentials.json')
+const { credentials } = require('config');
 
 function flattenArray(array) {
     return [].concat.apply([], array);

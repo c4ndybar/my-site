@@ -8,6 +8,7 @@
     "deploy-hosting": "firebase deploy --only hosting",
     "deploy-functions": "firebase deploy --only functions",
     "login": "firebase login",
+    "getconfig": "cd ./functions && firebase functions:config:get > .runtimeconfig.json",
     "emulators": "firebase emulators:start --only functions"
   },
   "repository": {
@@ -21,6 +22,6 @@
   },
   "homepage": "https://github.com/c4ndybar/mysite#readme",
   "dependencies": {
-    "firebase-tools": "^8.1.0"
+    "firebase-tools": "^12.9.1"
   }
 }

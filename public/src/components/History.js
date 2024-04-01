@@ -13,10 +13,10 @@ moment.updateLocale('en', {
         hh: "%dh",
         d: "%dd",
         dd: "%dd",
-        M: "%dmth",
-        MM: "%dmth",
-        y: "%dyr",
-        yy: "%dyr"
+        M: "%dM",
+        MM: "%dM",
+        y: "%dy",
+        yy: "%dy"
     }
 });
 
@@ -32,6 +32,7 @@ export default function History() {
                 snapshot.forEach((doc) => {
                     const data = doc.data()
                     items.push(Object.assign(data, {
+                        id: doc.id,
                         type: itemType,
                         date: data.date.toDate()
                     }));
@@ -57,20 +58,20 @@ export default function History() {
 
     }, []);
 
-    if (hasError)
+    if (hasError) {
         return (<span></span>)
-    else {
-        return (<div>
-            <Typography variant="h6">Log</Typography>
-            <table>
-                <tbody>
-                    {history.map((item) => {
-                        return (
-                            <HistoryItem key={item.id} item={item} />
-                        )
-                    })}
-                </tbody>
-            </table>
-        </div>)
     }
+
+    return <div>
+        <Typography variant="h6">Log</Typography>
+        <table>
+            <tbody>
+                {history.map((item) => {
+                    return (
+                        <HistoryItem key={item.id} item={item} />
+                    )
+                })}
+            </tbody>
+        </table>
+    </div>
 }

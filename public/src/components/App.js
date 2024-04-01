@@ -64,7 +64,7 @@ export default function App() {
                 <span className="emphasized">Andy Darr</span>
                 <span className="subtle">, a </span>
                 <span className="emphasized">software engineer</span>
-                <span className="subtle"> in Columbus</span></Typography>
+                <span className="subtle"> in Tucson</span></Typography>
               <Box component="div" mt={2}>
                 <Typography component="p" variant="body1" className="intro">I build apps, travel, game, play music, think about stuff, and drink lots of coffee.</Typography>
               </Box>

@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     historyDescription: {
         paddingLeft: '0.25rem'
     },
-    descriptionDiv:{
+    descriptionDiv: {
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -30,7 +30,7 @@ function getItemDescription(item, className) {
         case 'instaPost':
             if (item.caption) {
                 return (<div className={className}>Posted picture "<Link href={item.url} target="_blank">{item.caption}</Link>"</div>);
-            } 
+            }
 
             return (<div className={className}>Posted <Link href={item.url} target="_blank">picture</Link></div>);
         default:
@@ -41,9 +41,7 @@ function getItemDescription(item, className) {
 export default function HistoryItem({ item }) {
     const classes = useStyles();
 
-    return (
-        <tr>
-            <td className={classes.historyTime}>{moment(item.date).fromNow()}</td><td className={classes.historyDescription}>{getItemDescription(item, classes.descriptionDiv)}</td>
-        </tr>
-    )
+    return <tr>
+        <td className={classes.historyTime}>{moment(item.date).fromNow()}</td><td className={classes.historyDescription}>{getItemDescription(item, classes.descriptionDiv)}</td>
+    </tr>
 }

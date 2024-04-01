@@ -26,8 +26,7 @@ export default function Header(props) {
   const { sections } = props;
 
   return (
-    <React.Fragment>
-
+    <>
       <Toolbar component="nav" variant="dense" className={classes.toolbar}>
         {sections.map((section) => {
           const LinkIcon = section.icon;
@@ -47,7 +46,7 @@ export default function Header(props) {
         }
         )}
       </Toolbar>
-    </React.Fragment>
+    </>
   );
 }
 

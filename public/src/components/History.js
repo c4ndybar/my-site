@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HistoryItem from './HistoryItem'
 import { db } from '../database'
-import { Typography } from '@material-ui/core'
+import { Typography, CircularProgress } from '@material-ui/core'
 import moment from 'moment';
 
 moment.updateLocale('en', {
@@ -66,11 +66,8 @@ export default function History() {
         <Typography variant="h6">Log</Typography>
         <table>
             <tbody>
-                {history.map((item) => {
-                    return (
-                        <HistoryItem key={item.id} item={item} />
-                    )
-                })}
+                {!history.length && <CircularProgress color='inherit' size='20px' />}
+                {history.map((item) => <HistoryItem key={item.id} item={item} />)}
             </tbody>
         </table>
     </div>

@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     width: '200px',
-    height: '200px'
+    height: '200px',
+    borderRadius: '1rem',
   }
 }));
 
@@ -52,7 +53,7 @@ export default function App() {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
       <Container maxWidth="md">
         <Header sections={links} />
@@ -66,20 +67,20 @@ export default function App() {
                 <span className="emphasized">software engineer</span>
                 <span className="subtle"> in Tucson</span></Typography>
               <Box component="div" mt={2}>
-                <Typography component="p" variant="body1" className="intro">I build apps, travel, game, play music, think about stuff, and drink lots of coffee.</Typography>
+                <Typography component="p" variant="body1">Desert dweller. Lover of code, travel, games, and music.</Typography>
               </Box>
             </Grid>
             <Grid item xs={12} sm >
               <Box display="flex" justifyContent="center">
-                <Avatar src={me} className={classes.avatar} />
+                <Avatar src={me} className={classes.avatar} variant='rounded' />
               </Box>
             </Grid>
             <Grid item sm={12}>
-              <History/>
+              <History />
             </Grid>
           </Grid>
         </main>
       </Container>
-    </React.Fragment>
+    </>
   );
 }

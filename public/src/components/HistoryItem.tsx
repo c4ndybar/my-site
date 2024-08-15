@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from '@material-ui/core'
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,7 +20,44 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function getItemDescription(item, className) {
+interface HistoryItemBase {
+    id: string,
+    date: number,
+    type: string,
+}
+
+interface SpotifyHistoryItem extends HistoryItemBase {
+    type: 'music',
+    url: string,
+    trackName: string,
+    artistName: string,
+}
+
+interface GithubHistoryItem extends HistoryItemBase {       
+    type: 'commit',
+    url: string,
+    message: string,
+}
+
+interface InstagramHistoryItem extends HistoryItemBase {
+    type: 'instaPost',
+    url: string,
+    caption: string,
+}
+
+interface GenericHistoryItem extends HistoryItemBase {
+    type: 'generic',
+    name: string,
+    description: string,
+}
+
+export type Item = SpotifyHistoryItem | GithubHistoryItem | InstagramHistoryItem | GenericHistoryItem;
+
+interface HistoryItemProps {    
+    item: Item
+}
+
+function getItemDescription(item: Item, className: string) {
     switch (item.type) {
         case 'music':
             return (<div className={className}>Listend to <Link href={item.url} target="_blank">{item.trackName + ' - ' + item.artistName}</Link></div>);
@@ -38,7 +74,8 @@ function getItemDescription(item, className) {
     }
 }
 
-export default function HistoryItem({ item }) {
+
+export default function HistoryItem({ item }: HistoryItemProps) {
     const classes = useStyles();
 
     return <tr>

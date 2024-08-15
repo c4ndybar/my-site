@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import '../App.scss';
 import Header from './Header';
-import { GitHub, LinkedIn, Instagram, SportsEsports } from '@material-ui/icons'
 import { Container, Typography, Avatar, Box, Grid } from '@material-ui/core';
 import me from '../images/me.jpeg'
 import History from './History'

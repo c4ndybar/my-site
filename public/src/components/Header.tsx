@@ -49,7 +49,7 @@ const links = [
   }
 ];
 
-export default function Header(props) {
+export default function Header() {
   const classes = useStyles();
 
   return (

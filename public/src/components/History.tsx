@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import HistoryItem from './HistoryItem'
+import HistoryItem, { Item } from './HistoryItem'
 import { db } from '../database'
 import { Typography, CircularProgress } from '@material-ui/core'
 import moment from 'moment';
@@ -20,9 +20,9 @@ moment.updateLocale('en', {
     }
 });
 
-function getDbHistoryItems(collectionName, itemType) {
+function getDbHistoryItems(collectionName: string, itemType: string) : Promise<Item[]> {
     return db.collection(collectionName).orderBy('date', 'desc').limit(3).get().then((snapshot) => {
-        let items = [];
+        let items: Item[] = [];
 
         snapshot.forEach((doc) => {
             const data = doc.data()
@@ -30,7 +30,7 @@ function getDbHistoryItems(collectionName, itemType) {
                 id: doc.id,
                 type: itemType,
                 date: data.date.toDate()
-            }));
+            }) as Item);
         });
 
         return items;
@@ -39,7 +39,7 @@ function getDbHistoryItems(collectionName, itemType) {
 
 export default function History() {
     const [hasError, setErrors] = useState(false)
-    const [history, setHistory] = useState([])
+    const [history, setHistory] = useState<Item[]>([])
 
     useEffect(() => {
 

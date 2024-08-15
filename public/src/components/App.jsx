@@ -22,33 +22,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const links = [
-  {
-    icon: LinkedIn,
-    title: 'LinkedIn',
-    url: 'https://www.linkedin.com/in/andrew-darr/',
-    text: "See where I've worked",
-  },
-  {
-    icon: Instagram,
-    title: 'Instagram',
-    url: 'https://www.instagram.com/andydarrr/',
-    text: "See my photos"
-  },
-  {
-    icon: GitHub,
-    title: 'Github',
-    url: 'https://github.com/c4ndybar',
-    text: "See my code"
-  },
-  {
-    icon: SportsEsports,
-    title: 'Xbox Live',
-    url: 'https://xboxgamertag.com/search/L337-Jesu5',
-    text: 'Game with me',
-  }
-];
-
 export default function App() {
   const classes = useStyles();
 
@@ -56,7 +29,7 @@ export default function App() {
     <>
       <CssBaseline />
       <Container maxWidth="md">
-        <Header sections={links} />
+        <Header />
         <main>
           <Grid container spacing={5} className={classes.mainGrid}>
             <Grid item xs sm >

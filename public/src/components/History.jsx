@@ -20,27 +20,28 @@ moment.updateLocale('en', {
     }
 });
 
+function getDbHistoryItems(collectionName, itemType) {
+    return db.collection(collectionName).orderBy('date', 'desc').limit(3).get().then((snapshot) => {
+        let items = [];
+
+        snapshot.forEach((doc) => {
+            const data = doc.data()
+            items.push(Object.assign(data, {
+                id: doc.id,
+                type: itemType,
+                date: data.date.toDate()
+            }));
+        });
+
+        return items;
+    });
+}
+
 export default function History() {
     const [hasError, setErrors] = useState(false)
     const [history, setHistory] = useState([])
 
     useEffect(() => {
-        function getDbHistoryItems(collectionName, itemType) {
-            return db.collection(collectionName).orderBy('date', 'desc').limit(3).get().then((snapshot) => {
-                let items = [];
-
-                snapshot.forEach((doc) => {
-                    const data = doc.data()
-                    items.push(Object.assign(data, {
-                        id: doc.id,
-                        type: itemType,
-                        date: data.date.toDate()
-                    }));
-                });
-
-                return items;
-            });
-        }
 
         const instaPosts = getDbHistoryItems("instagramHistory", "instaPost");
         const recentlyPlayedMusic = getDbHistoryItems("musicHistory", "music");

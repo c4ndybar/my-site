@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import HistoryItem, { Item } from './HistoryItem'
 import { db } from '../database'
 import { Typography, CircularProgress } from '@material-ui/core'

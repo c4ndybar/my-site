@@ -1,4 +1,3 @@
-
 export function getDateFromExpiration(expiresInSeconds: number): Date {
-    return new Date(Date.now() + expiresInSeconds * 1000);
+  return new Date(Date.now() + expiresInSeconds * 1000);
 }

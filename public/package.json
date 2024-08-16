@@ -6,7 +6,7 @@
     "@material-ui/core": "^4.9.10",
     "@material-ui/icons": "^4.9.1",
     "@vitejs/plugin-react": "^4.3.1",
-    "firebase": "^7.14.2",
+    "firebase": "^10.13.0",
     "moment": "^2.24.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -14,10 +14,14 @@
     "vite-tsconfig-paths": "^5.0.1"
   },
   "scripts": {
+    "lint": "prettier . --write",
     "start": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
+  "pre-commit": [
+    "lint"
+  ],
   "browserslist": {
     "production": [
       ">0.2%",
@@ -33,6 +37,8 @@
   "devDependencies": {
     "@types/react": "^16.14.60",
     "@types/react-dom": "^18.3.0",
+    "pre-commit": "^1.2.2",
+    "prettier": "^3.3.3",
     "sass": "^1.72.0",
     "typescript": "^5.5.4"
   }

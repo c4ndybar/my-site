@@ -1,12 +1,26 @@
-const db = require('./database');
-const axios = require('axios');
+import { AxiosResponse } from "axios";
+import * as db from '../database';
+import axios from 'axios';
 
-function flattenArray(array) {
+function flattenArray(array: any[]) {
     return [].concat.apply([], array);
 }
 
-async function getRecentCommits() {
-    const response = await axios({
+// This type only covers Push Events and the fields we care about. It should be updated if we want to use more.
+interface GithubEvent {
+    type: string;
+    payload: {
+        commits: {
+            sha: string;
+            message: string;
+            url: string;
+        }[];
+    };
+    created_at: string;
+}
+
+async function getRecentCommits(): Promise<GithubCommit[]> {
+    const response: AxiosResponse<GithubEvent[]> = await axios({
         method: 'get',
         url: 'https://api.github.com/users/c4ndybar/events?per_page=10',
     });
@@ -25,7 +39,7 @@ async function getRecentCommits() {
     return flattenArray(arrayOfCommitArrays);
 }
 
-exports.pollGithub = async () => {
+export async function pollGithub() {
     const commits = await getRecentCommits();
 
     await db.updateGithubHistory(commits);

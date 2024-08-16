@@ -1,17 +1,17 @@
-const functions = require('firebase-functions');
-const { pollSpotify } = require('./spotifyPoller')
-const { pollGithub } = require('./githubPoller')
-const { pollInstagram } = require('./instagramPoller')
+import * as functions from 'firebase-functions';
+import { pollSpotify } from './pollers/spotifyPoller';
+import { pollGithub } from './pollers/githubPoller';
+import { pollInstagram } from './pollers/instagramPoller';
 
-function createHttpsListener(fn) {
-    return functions.https.onRequest(async (request, response) => {
+function createHttpsListener(fn: () => Promise<any>) {
+    return functions.https.onRequest(async (_request, response) => {
         try {
             const result = await fn()
             console.log('result is ', result)
             response.json(result);
         } catch (err) {
             console.error(err)
-            response.status('500').json(err)
+            response.status(500).json(err)
         }
     });
 }
@@ -21,9 +21,6 @@ exports.pollGithub = createHttpsListener(pollGithub);
 exports.pollInstagram = createHttpsListener(pollInstagram);
 
 exports.apiPoller = functions.pubsub.schedule('0 9-23 * * *').onRun(() => {
-    // Disabling Instagram since it isn't set up currently in prod
-    // return Promise.all([pollSpotify(), pollGithub(), pollInstagram()])
-
     return Promise.all([pollSpotify(), pollGithub(), pollInstagram()])
         .then(() => console.log('api polling successful'))
         .catch((err) => console.error('error polling apis', err))

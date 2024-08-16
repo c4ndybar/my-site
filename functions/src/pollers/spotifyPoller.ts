@@ -1,23 +1,24 @@
-const { updateMusicHistory, getSpotifyAccessTokens, updateSpotifyAccessToken } = require('./database');
-const SpotifyWebApi = require('spotify-web-api-node');
-const { getDateFromExpiration } = require('./util');
+import { updateMusicHistory, getSpotifyAccessTokens, updateSpotifyAccessToken } from '../database';
+import SpotifyWebApi from 'spotify-web-api-node';
+import { getDateFromExpiration } from '../util';
 
-async function refreshAccessToken(spotifyApi) {
+async function refreshAccessToken(spotifyApi: SpotifyWebApi): Promise<string> {
     console.log('Refreshing Spotify access token');
 
-    const { body } = await spotifyApi.refreshAccessToken()
+    const { body: {expires_in, access_token} } = await spotifyApi.refreshAccessToken()
 
-    const expireTime = getDateFromExpiration(body['expires_in']);
+    const expireTime = getDateFromExpiration(expires_in);
 
-    await updateSpotifyAccessToken(body['access_token'], expireTime)
+    await updateSpotifyAccessToken(access_token, expireTime)
 
-    return body['access_token'];
+    return access_token;
 }
 
-async function getRecentTracks(spotifyApi) {
-    const data = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 10 })
 
-    return data.body.items.map((item) => {
+async function getRecentTracks(spotifyApi: SpotifyWebApi): Promise<SpotifyTrack[]> {
+    const { body: { items } } = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 10 })
+
+    return items.map((item) => {
         return {
             id: item.track.id,
             artistName: item.track.artists[0].name,
@@ -31,7 +32,8 @@ async function getRecentTracks(spotifyApi) {
 
 }
 
-exports.pollSpotify = async () => {
+
+export async function pollSpotify(){
     let accessTokens = await getSpotifyAccessTokens();
 
     const spotifyApi = new SpotifyWebApi({

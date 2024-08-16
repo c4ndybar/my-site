@@ -1,9 +1,10 @@
-const db = require('./database');
-const axios = require('axios');
-const { getDateFromExpiration } = require('./util');
+import * as db from '../database';
+import axios, { AxiosResponse } from 'axios';
+import { getDateFromExpiration } from '../util';
+
 const ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
 
-async function refreshAccessToken(accessToken) {
+async function refreshAccessToken(accessToken: string): Promise<string> {
     console.log('Refreshing Instagram access token');
 
     const { data } = await axios({
@@ -18,11 +19,22 @@ async function refreshAccessToken(accessToken) {
     return data.access_token;
 }
 
-async function getPosts(accessToken) {
-    const response = await axios({
+async function getPosts(accessToken: string): Promise<InstaPost[]> {
+    interface InstaPostResponse {
+        id: string;
+        caption: string;
+        media_type: string;
+        media_url: string;
+        permalink: string;
+        thumbnail_url: string;
+        timestamp: string;
+    }
+
+    const response: AxiosResponse<{data: InstaPostResponse[]}> = await axios({
         method: 'get',
         url: `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=${accessToken}`,
     });
+
 
     return response.data.data.map((post) => {
         return {
@@ -35,9 +47,8 @@ async function getPosts(accessToken) {
     });
 }
 
-exports.pollInstagram = async () => {
+export async function pollInstagram() {
     let { accessToken, accessTokenExpireTime } = await db.getInstagramAccessToken();
-
     // Tokens are good for 60 days
     // Refresh the toekn if it will expire in less than a week
     // Unlike the Spotify access token, we can't let this one expire.  If it expires, I have to manual get a new token from the developer console.
@@ -53,4 +64,4 @@ exports.pollInstagram = async () => {
     await db.updateInstagramHistory(posts);
 
     return posts;
-};
+}

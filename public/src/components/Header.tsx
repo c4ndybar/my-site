@@ -69,6 +69,7 @@ export default function Header() {
               href={link.url}
               target="_blank"
               className={classes.link}
+              aria-label={link.title}
             >
               <LinkIcon />
             </Link>

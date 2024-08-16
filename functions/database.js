@@ -55,21 +55,32 @@ async function updateMusicHistory(tracks) {
     truncateRefAndInsertItems(musicHistoryRef, tracks);
 }
 async function getSpotifyAccessTokens() {
-    return spotifyRef.get()
-        .then((doc) => {
-            console.log(doc.id, '=>', doc.data());
-            let result = doc.data();
-            result.accessTokenExpireTime = result.accessTokenExpireTime.toDate();
-            return result;
-        })
-        .catch((err) => {
-            console.log('Error getting documents', err);
-        });
+    const doc = await spotifyRef.get()
+    const tokenData = doc.data();
+
+    tokenData.accessTokenExpireTime = tokenData.accessTokenExpireTime.toDate();
+
+    return tokenData;
 }
 
-function updateSpotifyAccessToken(token, expireTime) {
+async function getInstagramAccessToken() {
+    const tokenData = (await db.collection('keys').doc('instagram').get()).data();
+
+    tokenData.accessTokenExpireTime = tokenData.accessTokenExpireTime.toDate();
+
+    return tokenData;
+}
+
+function updateSpotifyAccessToken(accessToken, expireTime) {
     return spotifyRef.set({
-        accessToken: token,
+        accessToken,
+        accessTokenExpireTime: admin.firestore.Timestamp.fromDate(expireTime),
+    }, { merge: true })
+}
+
+function updateInstagramAccessToken(accessToken, expireTime) {
+    return db.collection('keys').doc('instagram').set({
+        accessToken,
         accessTokenExpireTime: admin.firestore.Timestamp.fromDate(expireTime),
     }, { merge: true })
 }
@@ -79,6 +90,8 @@ module.exports = {
     updateGithubHistory,
     updateMusicHistory,
     getSpotifyAccessTokens,
+    getInstagramAccessToken,
     updateSpotifyAccessToken,
+    updateInstagramAccessToken,
     updateInstagramHistory,
 }

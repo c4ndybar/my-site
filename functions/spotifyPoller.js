@@ -1,18 +1,21 @@
-const {updateMusicHistory, getSpotifyAccessTokens, updateSpotifyAccessToken} = require('./database');
+const { updateMusicHistory, getSpotifyAccessTokens, updateSpotifyAccessToken } = require('./database');
 const SpotifyWebApi = require('spotify-web-api-node');
+const { getDateFromExpiration } = require('./util');
 
 async function refreshAccessToken(spotifyApi) {
+    console.log('Refreshing Spotify access token');
+
     const { body } = await spotifyApi.refreshAccessToken()
-    console.log('The access token has been refreshed!');
 
-    spotifyApi.setAccessToken(body['access_token']);
-    let expireTime = new Date(Date.now() + Number.parseInt(body['expires_in'] * 1000));
+    const expireTime = getDateFromExpiration(body['expires_in']);
 
-     return updateSpotifyAccessToken(body['access_token'], expireTime)
+    await updateSpotifyAccessToken(body['access_token'], expireTime)
+
+    return body['access_token'];
 }
 
 async function getRecentTracks(spotifyApi) {
-    const data = await spotifyApi.getMyRecentlyPlayedTracks({limit: 10})
+    const data = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 10 })
 
     return data.body.items.map((item) => {
         return {
@@ -38,9 +41,11 @@ exports.pollSpotify = async () => {
         refreshToken: accessTokens.refreshToken
     });
 
+    // we have to get a new token if the old one is expired
     if (accessTokens.accessTokenExpireTime < (new Date())) {
-        console.log('refreshing token');
-        await refreshAccessToken(spotifyApi);
+        const newToken = await refreshAccessToken(spotifyApi);
+
+        spotifyApi.setAccessToken(newToken);
     }
 
     const tracks = await getRecentTracks(spotifyApi);

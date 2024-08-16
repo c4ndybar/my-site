@@ -24,7 +24,7 @@ exports.apiPoller = functions.pubsub.schedule('0 9-23 * * *').onRun(() => {
     // Disabling Instagram since it isn't set up currently in prod
     // return Promise.all([pollSpotify(), pollGithub(), pollInstagram()])
 
-    return Promise.all([pollSpotify(), pollGithub()])
+    return Promise.all([pollSpotify(), pollGithub(), pollInstagram()])
         .then(() => console.log('api polling successful'))
         .catch((err) => console.error('error polling apis', err))
 });

@@ -14,14 +14,12 @@
     "vite-tsconfig-paths": "^5.0.1"
   },
   "scripts": {
-    "lint": "prettier . --write",
+    "lint": "prettier . --check",
+    "lint:write": "prettier . --write",
     "start": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
-  "pre-commit": [
-    "lint"
-  ],
   "browserslist": {
     "production": [
       ">0.2%",
@@ -38,7 +36,6 @@
     "@types/react": "^16.14.60",
     "@types/react-dom": "^18.3.0",
     "pre-commit": "^1.2.2",
-    "prettier": "^3.3.3",
     "sass": "^1.72.0",
     "typescript": "^5.5.4"
   }

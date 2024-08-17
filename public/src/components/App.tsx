@@ -46,7 +46,12 @@ export default function App() {
             </Grid>
             <Grid item xs={12} sm>
               <Box display="flex" justifyContent="center">
-                <Avatar src={me} className={classes.avatar} variant="rounded" alt="Picture of me, Andy Darr"/>
+                <Avatar
+                  src={me}
+                  className={classes.avatar}
+                  variant="rounded"
+                  alt="Picture of me, Andy Darr"
+                />
               </Box>
             </Grid>
             <Grid item sm={12}>

@@ -9,53 +9,14 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: "0.25rem",
     minWidth: "65px",
   },
-  historyDescription: {
-    paddingLeft: "0.25rem",
-  },
   descriptionDiv: {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    width: "300px",
+    minWidth: "0px",
   },
+  historyRow: { display: "flex", flexDirection: "row", gap: "0.25rem" },
 }));
-
-interface HistoryItemBase {
-  id: string;
-  date: number;
-  type: string;
-}
-
-interface SpotifyHistoryItem extends HistoryItemBase {
-  type: "music";
-  url: string;
-  trackName: string;
-  artistName: string;
-}
-
-interface GithubHistoryItem extends HistoryItemBase {
-  type: "commit";
-  url: string;
-  message: string;
-}
-
-interface InstagramHistoryItem extends HistoryItemBase {
-  type: "instaPost";
-  url: string;
-  caption: string;
-}
-
-interface GenericHistoryItem extends HistoryItemBase {
-  type: "generic";
-  name: string;
-  description: string;
-}
-
-export type Item =
-  | SpotifyHistoryItem
-  | GithubHistoryItem
-  | InstagramHistoryItem
-  | GenericHistoryItem;
 
 interface HistoryItemProps {
   item: Item;
@@ -112,11 +73,9 @@ export default function HistoryItem({ item }: HistoryItemProps) {
   const classes = useStyles();
 
   return (
-    <tr>
-      <td className={classes.historyTime}>{moment(item.date).fromNow()}</td>
-      <td className={classes.historyDescription}>
-        {getItemDescription(item, classes.descriptionDiv)}
-      </td>
-    </tr>
+    <div className={classes.historyRow}>
+      <div className={classes.historyTime}>{moment(item.date).fromNow()}</div>
+      {getItemDescription(item, classes.descriptionDiv)}
+    </div>
   );
 }

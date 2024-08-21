@@ -18,3 +18,31 @@ var firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 
 export const db = firebase.firestore();
+
+export function getDbHistoryItems(
+  collectionName: string,
+  itemType: string,
+  limit: number,
+): Promise<Item[]> {
+  return db
+    .collection(collectionName)
+    .orderBy("date", "desc")
+    .limit(limit)
+    .get()
+    .then((snapshot) => {
+      let items: Item[] = [];
+
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        items.push(
+          Object.assign(data, {
+            id: doc.id,
+            type: itemType,
+            date: data.date.toDate(),
+          }) as Item,
+        );
+      });
+
+      return items;
+    });
+}

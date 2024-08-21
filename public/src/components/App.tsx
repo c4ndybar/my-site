@@ -5,6 +5,7 @@ import Header from "./Header";
 import { Container, Typography, Avatar, Box, Grid } from "@material-ui/core";
 import me from "../images/me.jpeg";
 import History from "./History";
+import Footer from "./Footer";
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -54,12 +55,15 @@ export default function App() {
                 />
               </Box>
             </Grid>
-            <Grid item sm={12}>
-              <History />
+            <Grid item xs={12}>
+              <Grid item xs={12} lg={6}>
+                <History />
+              </Grid>
             </Grid>
           </Grid>
         </main>
       </Container>
+      <Footer />
     </>
   );
 }

@@ -23,8 +23,14 @@ interface InstagramHistoryItem extends HistoryItemBase {
   caption: string;
 }
 
-interface GenericHistoryItem extends HistoryItemBase {
-  type: "generic";
+interface LifeHistoryItem extends HistoryItemBase {
+  type: "life";
+  name: string;
+  description: string;
+}
+
+interface TravelHistoryItem extends HistoryItemBase {
+  type: "travel";
   name: string;
   description: string;
 }
@@ -33,4 +39,5 @@ type Item =
   | SpotifyHistoryItem
   | GithubHistoryItem
   | InstagramHistoryItem
-  | GenericHistoryItem;
+  | LifeHistoryItem
+  | TravelHistoryItem;

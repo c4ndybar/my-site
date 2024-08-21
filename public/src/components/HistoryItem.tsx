@@ -1,6 +1,11 @@
 import { Link } from "@material-ui/core";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
+import HeadphonesIcon from "@material-ui/icons/HeadsetOutlined";
+import CodeIcon from "@material-ui/icons/CodeOutlined";
+import CameraIcon from "@material-ui/icons/PhotoCameraOutlined";
+import FlightIcon from "@material-ui/icons/FlightOutlined";
+import PersonIcon from "@material-ui/icons/PersonOutline";
 
 const useStyles = makeStyles((theme) => ({
   historyTime: {
@@ -14,68 +19,79 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     minWidth: "0px",
+    display: "flex",
+    alignItems: "center",
+    gap: "5px",
+    "& svg": {
+      height: "15px",
+      width: "15px",
+    },
   },
-  historyRow: { display: "flex", flexDirection: "row", gap: "0.25rem" },
+  historyRow: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "0.25rem",
+    marginTop: "3px",
+  },
 }));
 
 interface HistoryItemProps {
   item: Item;
 }
 
-function getItemDescription(item: Item, className: string) {
-  switch (item.type) {
-    case "music":
-      return (
-        <div className={className}>
-          Listend to{" "}
-          <Link href={item.url} target="_blank">
-            {item.trackName + " - " + item.artistName}
-          </Link>
-        </div>
-      );
-    case "commit":
-      return (
-        <div className={className}>
-          Commited code "
-          <Link href={item.url} target="_blank">
-            {item.message}
-          </Link>
-          "
-        </div>
-      );
-    case "instaPost":
-      if (item.caption) {
-        return (
-          <div className={className}>
-            Posted picture "
-            <Link href={item.url} target="_blank">
-              {item.caption}
-            </Link>
-            "
-          </div>
-        );
-      }
-
-      return (
-        <div className={className}>
-          Posted{" "}
-          <Link href={item.url} target="_blank">
-            picture
-          </Link>
-        </div>
-      );
-    default:
-      return <div className={className}>{item.name || item.description}</div>;
-  }
-}
-
 export default function HistoryItem({ item }: HistoryItemProps) {
   const classes = useStyles();
+
+  function getItemDescription(item: Item) {
+    switch (item.type) {
+      case "music":
+        return (
+          <div className={classes.descriptionDiv}>
+            <HeadphonesIcon /> Listend to{" "}
+            <Link href={item.url} target="_blank">
+              {item.trackName + " - " + item.artistName}
+            </Link>
+          </div>
+        );
+      case "commit":
+        return (
+          <div className={classes.descriptionDiv}>
+            <CodeIcon /> Commited code
+            <Link href={item.url} target="_blank">
+              "{item.message}"
+            </Link>
+          </div>
+        );
+      case "instaPost":
+        return (
+          <div className={classes.descriptionDiv}>
+            <CameraIcon /> Posted picture
+            <Link href={item.url} target="_blank">
+              "{item.caption || "on Instagram"}"
+            </Link>
+          </div>
+        );
+      case "travel":
+        return (
+          <div className={classes.descriptionDiv}>
+            <FlightIcon /> {item.name || item.description}
+          </div>
+        );
+      case "life":
+        return (
+          <div className={classes.descriptionDiv}>
+            <PersonIcon /> {item.name || item.description}
+          </div>
+        );
+      default:
+        console.error(`Unknown item type: ${JSON.stringify(item)}`);
+    }
+  }
 
   return (
     <div className={classes.historyRow}>
       <div className={classes.historyTime}>{moment(item.date).fromNow()}</div>
-      {getItemDescription(item, classes.descriptionDiv)}
+      {getItemDescription(item)}
     </div>
   );
 }
